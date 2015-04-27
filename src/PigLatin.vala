@@ -15,7 +15,7 @@
 
 */
 
-public class PigLatin.Main : Granite.Application {
+public class PigLatin : Granite.Application {
     construct {
         application_id = "me.alexgleason.piglatin.main";
         flags = ApplicationFlags.FLAGS_NONE;
@@ -38,6 +38,11 @@ public class PigLatin.Main : Granite.Application {
         about_translators = "Alex Gleason";
         about_license_type = Gtk.License.GPL_3_0;
     }
+    public static int main (string[] args) {
+        Gtk.init (ref args);
+        var application = new PigLatin ();
+        return application.run (args);
+    }
     public override void activate () {
         var window = new Gtk.Window ();
         window.title = "Pig Latin";
@@ -45,10 +50,19 @@ public class PigLatin.Main : Granite.Application {
         window.set_position (Gtk.WindowPosition.CENTER);
         window.set_default_size (460, 430);
         window.destroy.connect (Gtk.main_quit);
-
         this.add_window (window);
 
         Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        Gtk.Menu menu = new Gtk.Menu ();
+        Gtk.Toolbar toolbar = new Gtk.Toolbar ();
+
+        var slider = new Gtk.ToolItem ();
+        slider.set_expand (true);
+        var appmenu = this.create_appmenu (menu);
+
+        toolbar.insert (slider, 0);
+        toolbar.insert (appmenu, 1);
+        toolbar.get_style_context ().add_class ("primary-toolbar");
 
         var input = new Gtk.TextView ();
         var output = new Gtk.TextView ();
@@ -59,6 +73,7 @@ public class PigLatin.Main : Granite.Application {
             output.buffer.text = translate (input.buffer.text);
         });
 
+        box.pack_start (toolbar, false);
         box.pack_start (input, true, true, 0);
         box.pack_start (output, true, true, 0);
         window.add (box);
@@ -135,10 +150,5 @@ public class PigLatin.Main : Granite.Application {
         if(/[A-Z]/.match(word[0].to_string()))
             return true;
         return false;
-    }
-
-    public static int main (string[] args) {
-        var application = new PigLatin.Main ();
-        return application.run (args);
     }
 }
