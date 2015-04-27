@@ -21,24 +21,21 @@ int main(string[] args) {
     window.title = "Pig Latin";
     window.set_border_width (12);
     window.set_position (Gtk.WindowPosition.CENTER);
-    window.set_default_size (350, 250);
+    window.set_default_size (460, 430);
     window.destroy.connect (Gtk.main_quit);
 
     Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-    var input = new Gtk.Entry ();
-    input.placeholder_text = "Text to translate...";
-
-    var output = new Gtk.Entry ();
+    var input = new Gtk.TextView ();
+    var output = new Gtk.TextView ();
     output.editable = false;
 
-    input.activate.connect(() => {
-        output.set_text (translate (input.get_text()));
+    input.buffer.changed.connect(() => {
+        output.buffer.text = translate (input.buffer.text);
     });
 
-
-    box.pack_start (input, false, true, 8);
-    box.pack_start (output, false, true, 8);
+    box.pack_start (input, true, true, 8);
+    box.pack_start (output, true, true, 8);
     window.add (box);
     window.show_all ();
 
