@@ -9,4 +9,5 @@ Created in and for [elementary OS](https://elementary.io/).
 ## How to Build
 
 `mkdir _build`
+
 `valac --pkg gtk+-3.0 --pkg granite -o _build/pig-latin src/PigLatin.vala`
