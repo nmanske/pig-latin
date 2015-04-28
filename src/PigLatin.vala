@@ -45,7 +45,7 @@ namespace PigLatin {
         }
         public override void activate () {
             var window = new Gtk.Window ();
-            window.title = "Pig Latin";
+            window.title = this.program_name;
             window.set_border_width (0);
             window.set_position (Gtk.WindowPosition.CENTER);
             window.set_default_size (460, 430);
