@@ -61,6 +61,7 @@ namespace PigLatin {
             window.set_titlebar (headerbar);
             headerbar.pack_end (appmenu);
 
+            Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
             Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             var input = new Gtk.TextView ();
@@ -76,7 +77,8 @@ namespace PigLatin {
 
             box.pack_start (input, true, true, 0);
             box.pack_start (output, true, true, 0);
-            window.add (box);
+            scrolled_window.add (box);
+            window.add (scrolled_window);
             window.show_all ();
         }
 
