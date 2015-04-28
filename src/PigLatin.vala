@@ -55,11 +55,13 @@ namespace PigLatin {
             // Headerbar
             Gtk.Menu menu = new Gtk.Menu ();
             var appmenu = this.create_appmenu (menu);
+            var clear_button = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
             Gtk.HeaderBar headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
             headerbar.title = program_name;
             window.set_titlebar (headerbar);
             headerbar.pack_end (appmenu);
+            headerbar.pack_end (clear_button);
 
             Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
             Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -74,6 +76,11 @@ namespace PigLatin {
             input.buffer.changed.connect(() => {
                 output.buffer.text = translate (input.buffer.text);
             });
+            clear_button.clicked.connect(() => {
+                input.buffer.text = "";
+            });
+
+            input.buffer.text = "Type text here...";
 
             box.pack_start (input, true, true, 0);
             box.pack_start (output, true, true, 0);
