@@ -24,6 +24,9 @@ namespace PigLatin {
     }
 
     public class PigLatinApp : Granite.Application {
+
+        private static Translator pig_latin_translator = new PigLatinTranslator ();
+
         construct {
             // Granite automatically makes an "About" section with this stuff
             application_id = "me.alexgleason.piglatin";
@@ -43,6 +46,7 @@ namespace PigLatin {
             about_translators = null;
             about_license_type = Gtk.License.GPL_3_0;
         }
+
         public override void activate () {
             var window = new Gtk.Window ();
             window.title = this.program_name;
@@ -74,7 +78,7 @@ namespace PigLatin {
             output.margin = 12;
 
             input.buffer.changed.connect(() => {
-                output.buffer.text = translate (input.buffer.text);
+                output.buffer.text = pig_latin_translator.translate (input.buffer.text);
             });
             clear_button.clicked.connect(() => {
                 input.buffer.text = "";
@@ -87,78 +91,6 @@ namespace PigLatin {
             scrolled_window.add (box);
             window.add (scrolled_window);
             window.show_all ();
-        }
-
-        /* Take in a string and spit out Pig Latin */
-        public string translate(string input) {
-            string word = "";
-            string output = "";
-            for (int i = 0; i <= input.length; i++) {
-                if (/[a-zA-Z]/.match(input[i].to_string())) {
-                    word += input[i].to_string();
-                } else {
-                    if (word.length > 0) {
-                        output += process_word(word);
-                        word = "";
-                    }
-                    output += input[i].to_string();
-                }
-            }
-            return output;
-        }
-
-        /* Process a single word */
-        public string process_word(string word) {
-            unichar[] vowels = {'a','e','i','o','u','A','E','I','O','U'};
-            string result = "";
-            /* Process words that start with vowel sounds */
-            if (word[0] in vowels)
-                result = word+"w";
-            /* Process words that start with consonant sounds */
-            else {
-                /* Check for QU and just put it at the end */
-                if (word.up()[0] == 'Q' && word.up()[1] == 'U')
-                    result = word[2:word.length]+"qu";
-                /* Otherwise find the first vowel and start the word there */
-                else {
-                    int index_of_first_vowel = 1;
-                    for (int i = 0; i < word.length; i++) {
-                        if (word[i] in vowels) {
-                            index_of_first_vowel = i;
-                            break;
-                        }
-                    }
-                    result = word[index_of_first_vowel:word.length]+word[0:index_of_first_vowel];
-                }
-            }
-            result = result+"ay";
-            result = result.down();
-            if (word_is_uppercase(word))
-                result = result.up();
-            else if (word_is_capitalized(word))
-                result = result[0].to_string().up()+result[1:result.length];
-            return result;
-        }
-
-        /* Check if word is uppercase */
-        public bool word_is_uppercase(string word) {
-            if (word == "I") return false;
-
-            // TODO: use a regex so this is less bad. Not sure why ^[A-Z]$ doesn't work.
-            int count = 0;
-            for (int i = 0; i < word.length; i++)
-                if (word_is_capitalized(word[i].to_string()))
-                    count++;
-            if (count == word.length)
-                return true;
-            return false;
-        }
-
-        /* Check if a word is capitalized */
-        public bool word_is_capitalized(string word) {
-            if(/[A-Z]/.match(word[0].to_string()))
-                return true;
-            return false;
         }
     }
 }
