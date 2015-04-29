@@ -57,14 +57,11 @@ namespace PigLatin {
             this.add_window (window);
 
             // Headerbar
-            Gtk.Menu menu = new Gtk.Menu ();
-            var appmenu = this.create_appmenu (menu);
             var clear_button = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
             Gtk.HeaderBar headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
             headerbar.title = program_name;
             window.set_titlebar (headerbar);
-            headerbar.pack_end (appmenu);
             headerbar.pack_end (clear_button);
 
             Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
