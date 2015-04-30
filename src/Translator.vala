@@ -21,25 +21,13 @@ namespace PigLatin {
 
         /* Breaks string into words and translates them word-by-word */
         public string translate (string input) {
-            string word = "";
-            string output = "";
-            for (int i = 0; i <= input.length; i++) {
-                /* Load alphanumeric characters into the word buffer */
-                if (is_alphanumeric (input[i]))
-                    word += input[i].to_string();
-                /* (this special case deals with contractions) */
-                else if (input[i] == '\'' && is_alphanumeric (input[i-1]) && is_alphanumeric (input[i+1]))
-                    word += input[i].to_string();
-                /* ...until a symbol is hit, then process the word */
-                else {
-                    if (word.length > 0) {
-                        output += fix_case (process_word (fix_case_pre (word)), word);
-                        word = "";
-                    }
-                    output += input[i].to_string();
-                }
-            }
-            return output;
+            Regex words = new Regex ("\\b[a-zA-Z']+\\b", 0, 0);
+            return words.replace_eval (input, -1, 0, RegexMatchFlags.NOTEMPTY, translate_cb);
+        }
+        public bool translate_cb (MatchInfo match_info, StringBuilder result) {
+            string match = match_info.fetch(0);
+            result.append ( fix_case (process_word ( fix_case_pre(match)), match));
+            return false;
         }
 
         /* Process a single word */
