@@ -20,21 +20,22 @@ namespace PigLatin {
     public class PigLatinTranslator : Translator {
 
         public override string encode_word (string word) {
-            unichar[] vowels = { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+            Regex vowels = /[aeiou]/i;
             string result = word;
             /* Process words that start with vowel sounds */
-            if (result[0] in vowels)
+            if (vowels.match (result[0:1]))
                 result = result + "w";
             /* Process words that start with consonant sounds */
             else {
                 /* Check for QU and just put it at the end */
-                if (result.up ()[0] == 'Q' && result.up ()[1] == 'U')
+                if (/[q][u]/i.match (result[0:2]))
                     result = result[2:word.length]+result[0:2];
                 /* Otherwise find the first vowel and start the word there */
                 else {
                     int index_of_first_vowel = 1;
                     for (int i = 1; i < result.length; i++) {
-                        if (result[i] in vowels || result.up ()[i] == 'Y') {
+                        string first_letter = result[i:i+1];
+                        if (vowels.match (first_letter) || /[y]/i.match (first_letter)) {
                             index_of_first_vowel = i;
                             break;
                         }
@@ -42,11 +43,12 @@ namespace PigLatin {
                     result = result[index_of_first_vowel:result.length] + result[0:index_of_first_vowel];
                 }
             }
-            result = result+"ay";
+            result = result + "ay";
             return result;
         }
 
         public override string decode_word (string word) {
+            // TODO
             string result = word;
             result = result[0:result.length - 2];
             return result;

@@ -17,11 +17,12 @@
 
 namespace PigLatin {
 
-    public abstract class Translator {
+    public abstract class Translator : GLib.Object {
+
+        protected Regex words = /\b[a-zA-Z']+\b/;
 
         /* Breaks string into words and encodes them word-by-word */
-        public string translate (string input, bool decode = false) {
-            Regex words = /\b[a-zA-Z']+\b/;
+        public virtual string translate (string input, bool decode = false) {
             RegexEvalCallback eval = encode_word_cb;
             if (decode)
                 eval = decode_word_cb;
@@ -31,20 +32,20 @@ namespace PigLatin {
         public abstract string encode_word (string word);
         public abstract string decode_word (string word);
 
-        protected string pre_process_word (string word) {
+        protected virtual string pre_process_word (string word) {
             string result = word;
             if (word_get_case (word) == "capitalized")
-                result = result[0].to_string ().down () + result[1:result.length];
+                result = result[0:1].down () + result[1:result.length];
             return result;
         }
 
         /* Fixes the case post processing based on the case of the original word */
-        protected string post_process_word (string new_word, string original_word) {
+        protected virtual string post_process_word (string new_word, string original_word) {
             string result = new_word;
             if (word_is_uppercase (original_word))
                 result = result.up ();
             else if (word_is_capitalized (original_word))
-                result = result[0].to_string ().up () + result[1:result.length];
+                result = result[0:1].up () + result[1:result.length];
             return result;
         }
 
@@ -82,7 +83,7 @@ namespace PigLatin {
 
         /* Check if a word is capitalized */
         private bool word_is_capitalized (string word) {
-            if (/[A-Z]/.match (word[0].to_string ()))
+            if (/[A-Z]/.match (word[0:1]))
                 return true;
             return false;
         }

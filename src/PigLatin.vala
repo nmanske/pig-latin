@@ -27,6 +27,7 @@ namespace PigLatin {
 
         private static Translator pig_latin_translator = new PigLatinTranslator ();
         private static Translator reverse_translator = new ReverseTranslator ();
+        private static Translator binary_translator = new BinaryTranslator ();
         private static Translator english_translator = new EnglishTranslator ();
         private static Translator current_translator = pig_latin_translator;
 
@@ -71,6 +72,7 @@ namespace PigLatin {
 		    Gtk.ComboBoxText combo_box = new Gtk.ComboBoxText ();
 		    combo_box.append_text ("Pig Latin");
 		    combo_box.append_text ("Reverse");
+            combo_box.append_text ("Binary");
             combo_box.append_text ("English");
 		    combo_box.active = 0;
 		    combo_box.changed.connect (() => {
@@ -81,6 +83,9 @@ namespace PigLatin {
                         break;
                     case "Reverse":
                         current_translator = reverse_translator;
+                        break;
+                    case "Binary":
+                        current_translator = binary_translator;
                         break;
                     case "English":
                         current_translator = english_translator;
@@ -115,7 +120,7 @@ namespace PigLatin {
             input.left_margin = 12;
             input.right_margin = 12;
             input.pixels_above_lines = 10;
-            output.get_style_context().add_class("h3");
+            output.get_style_context ().add_class ("h3");
             output.cursor_visible = false;
 
             input.buffer.changed.connect(() => {
