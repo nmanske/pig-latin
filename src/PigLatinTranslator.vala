@@ -28,7 +28,7 @@ namespace PigLatin {
             /* Process words that start with consonant sounds */
             else {
                 /* Check for QU and just put it at the end */
-                if (/[q][u]/i.match (result[0:2]))
+                if (/qu/i.match (result[0:2]))
                     result = result[2:word.length]+result[0:2];
                 /* Otherwise find the first vowel and start the word there */
                 else {
