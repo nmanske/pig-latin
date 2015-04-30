@@ -27,6 +27,9 @@ namespace PigLatin {
 
         private static Translator pig_latin_translator = new PigLatinTranslator ();
         private static Translator reverse_translator = new ReverseTranslator ();
+        private static Translator current_translator = pig_latin_translator;
+        private Gtk.TextView input = new Gtk.TextView ();
+        private Gtk.TextView output = new Gtk.TextView ();
 
         construct {
             // Granite automatically makes an "About" section with this stuff
@@ -62,20 +65,40 @@ namespace PigLatin {
             Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (display, Gdk.SELECTION_CLIPBOARD);
             var copy_button = new Gtk.ToolButton.from_stock (Gtk.Stock.COPY);
 
+		    // Combo Box
+		    Gtk.ComboBoxText combo_box = new Gtk.ComboBoxText ();
+		    combo_box.append_text ("Pig Latin");
+		    combo_box.append_text ("Reverse");
+		    combo_box.active = 0;
+		    combo_box.changed.connect (() => {
+			    string title = combo_box.get_active_text ();
+			    switch (title) {
+                    case "Pig Latin":
+                        current_translator = pig_latin_translator;
+                        break;
+                    case "Reverse":
+                        current_translator = reverse_translator;
+                        break;
+                    default:
+                        current_translator = pig_latin_translator;
+                        break;
+                }
+                update_buffer();
+		    });
+
             // Headerbar
             var clear_button = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
             Gtk.HeaderBar headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
             headerbar.title = program_name;
             window.set_titlebar (headerbar);
+            headerbar.pack_start (combo_box);
             headerbar.pack_end (clear_button);
             headerbar.pack_end (copy_button);
 
             Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
             Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-            var input = new Gtk.TextView ();
-            var output = new Gtk.TextView ();
             input.wrap_mode = Gtk.WrapMode.WORD;
             output.wrap_mode = Gtk.WrapMode.WORD;
             output.editable = false;
@@ -90,10 +113,9 @@ namespace PigLatin {
             output.cursor_visible = false;
 
             input.buffer.changed.connect(() => {
-                output.buffer.text = pig_latin_translator.translate (input.buffer.text)+"\n";
-                //output.buffer.text = reverse_translator.translate (input.buffer.text)+"\n";
+                update_buffer();
             });
-            output.buffer.text = "\n";
+            update_buffer(); // Run on start
 
             clear_button.clicked.connect(() => {
                 input.buffer.text = "";
@@ -108,6 +130,10 @@ namespace PigLatin {
             scrolled_window.add (box);
             window.add (scrolled_window);
             window.show_all ();
+        }
+
+        private void update_buffer () {
+            output.buffer.text = current_translator.translate (input.buffer.text)+"\n";
         }
     }
 }

@@ -27,6 +27,7 @@ namespace PigLatin {
                 /* Load alphanumeric characters into the word buffer */
                 if (is_alphanumeric (input[i]))
                     word += input[i].to_string();
+                /* (this special case deals with contractions) */
                 else if (input[i] == '\'' && is_alphanumeric (input[i-1]) && is_alphanumeric (input[i+1]))
                     word += input[i].to_string();
                 /* ...until a symbol is hit, then process the word */
@@ -45,12 +46,14 @@ namespace PigLatin {
         public abstract string process_word (string word);
 
         /* Modifies the case of a word before processing.
-           This is meant to be kept in a separate variable than the original word. */
+           Keep the result of this in a separate variable from the original word, then you can compare them. */
         protected string fix_case_pre (string word) {
             string result = word;
-            if (word_is_uppercase (word))
-                result = result;
-            else if (word_is_capitalized(word))
+            if (word_is_capitalized(word) && !word_is_uppercase (word))
+                /* Lowercase the first letter of a capitalized word since the letter will probably
+                   be moved. The word gets uncapitalized in fix_case. Implementing a Word class
+                   would probably make this better because you could store that its capitalized
+                   directly inside it. */
                 result = result[0].to_string().down() + result[1:result.length];
             return result;
         }

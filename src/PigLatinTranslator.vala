@@ -33,13 +33,13 @@ namespace PigLatin {
                 /* Otherwise find the first vowel and start the word there */
                 else {
                     int index_of_first_vowel = 1;
-                    for (int i = 0; i < result.length; i++) {
-                        if (result[i] in vowels) {
+                    for (int i = 1; i < result.length; i++) {
+                        if (result[i] in vowels || result.up()[i] == 'Y') {
                             index_of_first_vowel = i;
                             break;
                         }
                     }
-                    result = result[index_of_first_vowel:result.length]+result[0:index_of_first_vowel];
+                    result = result[index_of_first_vowel:result.length] + result[0:index_of_first_vowel];
                 }
             }
             result = result+"ay";
