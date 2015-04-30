@@ -21,8 +21,8 @@ namespace PigLatin {
 
         /* Breaks string into words and translates them word-by-word */
         public string translate (string input) {
-            Regex words = new Regex ("\\b[a-zA-Z']+\\b", 0, 0);
-            return words.replace_eval (input, -1, 0, RegexMatchFlags.NOTEMPTY, translate_cb);
+            Regex words = /\b[a-zA-Z']+\b/;
+            return words.replace_eval (input, -1, 0, 0, translate_cb);
         }
         public bool translate_cb (MatchInfo match_info, StringBuilder result) {
             string match = match_info.fetch(0);
