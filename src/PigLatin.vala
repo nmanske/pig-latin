@@ -26,6 +26,7 @@ namespace PigLatin {
     public class PigLatinApp : Granite.Application {
 
         private static Translator pig_latin_translator = new PigLatinTranslator ();
+        private static Translator reverse_translator = new ReverseTranslator ();
 
         construct {
             // Granite automatically makes an "About" section with this stuff
@@ -52,9 +53,14 @@ namespace PigLatin {
             window.title = this.program_name;
             window.set_border_width (0);
             window.set_position (Gtk.WindowPosition.CENTER);
-            window.set_default_size (460, 430);
+            window.set_default_size (460, 500);
             window.destroy.connect (Gtk.main_quit);
             this.add_window (window);
+
+            // Clipboard
+            Gdk.Display display = window.get_display ();
+            Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (display, Gdk.SELECTION_CLIPBOARD);
+            var copy_button = new Gtk.ToolButton.from_stock (Gtk.Stock.COPY);
 
             // Headerbar
             var clear_button = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
@@ -63,6 +69,7 @@ namespace PigLatin {
             headerbar.title = program_name;
             window.set_titlebar (headerbar);
             headerbar.pack_end (clear_button);
+            headerbar.pack_end (copy_button);
 
             Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
             Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -72,16 +79,29 @@ namespace PigLatin {
             input.wrap_mode = Gtk.WrapMode.WORD;
             output.wrap_mode = Gtk.WrapMode.WORD;
             output.editable = false;
-            output.margin = 12;
+            input.margin = 12;
+            output.left_margin = 12;
+            output.right_margin = 12;
+            output.pixels_above_lines = 10;
+            input.left_margin = 12;
+            input.right_margin = 12;
+            input.pixels_above_lines = 10;
+            output.get_style_context().add_class("h3");
+            output.cursor_visible = false;
 
             input.buffer.changed.connect(() => {
-                output.buffer.text = pig_latin_translator.translate (input.buffer.text);
+                output.buffer.text = pig_latin_translator.translate (input.buffer.text)+"\n";
+                //output.buffer.text = reverse_translator.translate (input.buffer.text)+"\n";
             });
+            output.buffer.text = "\n";
+
             clear_button.clicked.connect(() => {
                 input.buffer.text = "";
             });
 
-            input.buffer.text = "Type text here...";
+            copy_button.clicked.connect(() => {
+                clipboard.set_text (output.buffer.text, -1);
+            });
 
             box.pack_start (input, true, true, 0);
             box.pack_start (output, true, true, 0);

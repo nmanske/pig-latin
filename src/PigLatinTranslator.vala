@@ -21,33 +21,28 @@ namespace PigLatin {
 
         public override string process_word(string word) {
             unichar[] vowels = {'a','e','i','o','u','A','E','I','O','U'};
-            string result = "";
+            string result = word;
             /* Process words that start with vowel sounds */
-            if (word[0] in vowels)
-                result = word+"w";
+            if (result[0] in vowels)
+                result = result+"w";
             /* Process words that start with consonant sounds */
             else {
                 /* Check for QU and just put it at the end */
-                if (word.up()[0] == 'Q' && word.up()[1] == 'U')
-                    result = word[2:word.length]+"qu";
+                if (result.up()[0] == 'Q' && result.up()[1] == 'U')
+                    result = result[2:word.length]+result[0:2];
                 /* Otherwise find the first vowel and start the word there */
                 else {
                     int index_of_first_vowel = 1;
-                    for (int i = 0; i < word.length; i++) {
-                        if (word[i] in vowels) {
+                    for (int i = 0; i < result.length; i++) {
+                        if (result[i] in vowels) {
                             index_of_first_vowel = i;
                             break;
                         }
                     }
-                    result = word[index_of_first_vowel:word.length]+word[0:index_of_first_vowel];
+                    result = result[index_of_first_vowel:result.length]+result[0:index_of_first_vowel];
                 }
             }
             result = result+"ay";
-            result = result.down();
-            if (word_is_uppercase(word))
-                result = result.up();
-            else if (word_is_capitalized(word))
-                result = result[0].to_string().up()+result[1:result.length];
             return result;
         }
     }

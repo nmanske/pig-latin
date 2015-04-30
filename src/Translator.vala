@@ -20,15 +20,19 @@ namespace PigLatin {
     public abstract class Translator {
 
         /* Breaks string into words and translates them word-by-word */
-        public string translate(string input) {
+        public string translate (string input) {
             string word = "";
             string output = "";
             for (int i = 0; i <= input.length; i++) {
-                if (/[a-zA-Z]/.match(input[i].to_string())) {
+                /* Load alphanumeric characters into the word buffer */
+                if (is_alphanumeric (input[i]))
                     word += input[i].to_string();
-                } else {
+                else if (input[i] == '\'' && is_alphanumeric (input[i-1]) && is_alphanumeric (input[i+1]))
+                    word += input[i].to_string();
+                /* ...until a symbol is hit, then process the word */
+                else {
                     if (word.length > 0) {
-                        output += process_word(word);
+                        output += fix_case (process_word (fix_case_pre (word)), word);
                         word = "";
                     }
                     output += input[i].to_string();
@@ -38,27 +42,47 @@ namespace PigLatin {
         }
 
         /* Process a single word */
-        public abstract string process_word(string word);
+        public abstract string process_word (string word);
+
+        /* Modifies the case of a word before processing.
+           This is meant to be kept in a separate variable than the original word. */
+        protected string fix_case_pre (string word) {
+            string result = word;
+            if (word_is_uppercase (word))
+                result = result;
+            else if (word_is_capitalized(word))
+                result = result[0].to_string().down() + result[1:result.length];
+            return result;
+        }
+
+        /* Fixes the case post processing based on the case of the original word */
+        protected string fix_case (string new_word, string original_word) {
+            string result = new_word;
+            if (word_is_uppercase (original_word))
+                result = result.up();
+            else if (word_is_capitalized (original_word))
+                result = result[0].to_string().up() + result[1:result.length];
+            return result;
+        }
 
         /* Check if word is uppercase */
-        protected bool word_is_uppercase(string word) {
+        protected bool word_is_uppercase (string word) {
             if (word == "I") return false;
-
-            // TODO: use a regex so this is less bad. Not sure why ^[A-Z]$ doesn't work.
-            int count = 0;
-            for (int i = 0; i < word.length; i++)
-                if (word_is_capitalized(word[i].to_string()))
-                    count++;
-            if (count == word.length)
+            if (/^[^a-z]{0,}$/.match (word))
                 return true;
             return false;
         }
 
         /* Check if a word is capitalized */
-        protected bool word_is_capitalized(string word) {
-            if(/[A-Z]/.match(word[0].to_string()))
+        protected bool word_is_capitalized (string word) {
+            if (/[A-Z]/.match (word[0].to_string()))
                 return true;
             return false;
+        }
+
+        /* Check if character is a letter */
+        protected bool is_alphanumeric (unichar letter) {
+            return /[a-zA-Z]/.match (letter.to_string());
         }
     }
 
