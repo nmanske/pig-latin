@@ -27,7 +27,9 @@ namespace PigLatin {
 
         private static Translator pig_latin_translator = new PigLatinTranslator ();
         private static Translator reverse_translator = new ReverseTranslator ();
+        private static Translator english_translator = new EnglishTranslator ();
         private static Translator current_translator = pig_latin_translator;
+
         private Gtk.TextView input = new Gtk.TextView ();
         private Gtk.TextView output = new Gtk.TextView ();
 
@@ -69,6 +71,7 @@ namespace PigLatin {
 		    Gtk.ComboBoxText combo_box = new Gtk.ComboBoxText ();
 		    combo_box.append_text ("Pig Latin");
 		    combo_box.append_text ("Reverse");
+            combo_box.append_text ("English");
 		    combo_box.active = 0;
 		    combo_box.changed.connect (() => {
 			    string title = combo_box.get_active_text ();
@@ -79,8 +82,11 @@ namespace PigLatin {
                     case "Reverse":
                         current_translator = reverse_translator;
                         break;
+                    case "English":
+                        current_translator = english_translator;
+                        break;
                     default:
-                        current_translator = pig_latin_translator;
+                        current_translator = english_translator;
                         break;
                 }
                 update_buffer();
@@ -113,9 +119,9 @@ namespace PigLatin {
             output.cursor_visible = false;
 
             input.buffer.changed.connect(() => {
-                update_buffer();
+                update_buffer ();
             });
-            update_buffer(); // Run on start
+            update_buffer (); // Run on start
 
             clear_button.clicked.connect(() => {
                 input.buffer.text = "";

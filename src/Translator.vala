@@ -19,61 +19,72 @@ namespace PigLatin {
 
     public abstract class Translator {
 
-        /* Breaks string into words and translates them word-by-word */
-        public string translate (string input) {
+        /* Breaks string into words and encodes them word-by-word */
+        public string translate (string input, bool decode = false) {
             Regex words = /\b[a-zA-Z']+\b/;
-            return words.replace_eval (input, -1, 0, 0, translate_cb);
-        }
-        public bool translate_cb (MatchInfo match_info, StringBuilder result) {
-            string match = match_info.fetch(0);
-            result.append ( fix_case (process_word ( fix_case_pre(match)), match));
-            return false;
+            RegexEvalCallback eval = encode_word_cb;
+            if (decode)
+                eval = decode_word_cb;
+            return words.replace_eval (input, -1, 0, 0, eval);
         }
 
-        /* Process a single word */
-        public abstract string process_word (string word);
+        public abstract string encode_word (string word);
+        public abstract string decode_word (string word);
 
-        /* Modifies the case of a word before processing.
-           Keep the result of this in a separate variable from the original word, then you can compare them. */
-        protected string fix_case_pre (string word) {
+        protected string pre_process_word (string word) {
             string result = word;
-            if (word_is_capitalized(word) && !word_is_uppercase (word))
-                /* Lowercase the first letter of a capitalized word since the letter will probably
-                   be moved. The word gets uncapitalized in fix_case. Implementing a Word class
-                   would probably make this better because you could store that its capitalized
-                   directly inside it. */
-                result = result[0].to_string().down() + result[1:result.length];
+            if (word_get_case (word) == "capitalized")
+                result = result[0].to_string ().down () + result[1:result.length];
             return result;
         }
 
         /* Fixes the case post processing based on the case of the original word */
-        protected string fix_case (string new_word, string original_word) {
+        protected string post_process_word (string new_word, string original_word) {
             string result = new_word;
             if (word_is_uppercase (original_word))
-                result = result.up();
+                result = result.up ();
             else if (word_is_capitalized (original_word))
-                result = result[0].to_string().up() + result[1:result.length];
+                result = result[0].to_string ().up () + result[1:result.length];
             return result;
         }
 
+        /* Get the word's case */
+        protected string word_get_case (string word) {
+            string result = word;
+            if (word_is_uppercase (word))
+                result = "uppercase";
+            else if (word_is_capitalized (word))
+                result = "capitalized";
+            else
+                result = "";
+            return result;
+        }
+
+        private bool encode_word_cb (MatchInfo match_info, StringBuilder result) {
+            string word = match_info.fetch (0);
+            result.append (post_process_word (encode_word (pre_process_word(word)), word));
+            return false;
+        }
+
+        private bool decode_word_cb (MatchInfo match_info, StringBuilder result) {
+            string word = match_info.fetch (0);
+            result.append (post_process_word (decode_word (pre_process_word(word)), word));
+            return false;
+        }
+
         /* Check if word is uppercase */
-        protected bool word_is_uppercase (string word) {
+        private bool word_is_uppercase (string word) {
             if (word == "I") return false;
-            if (/^[^a-z]{0,}$/.match (word))
+            if (/^[^a-z]+$/.match (word))
                 return true;
             return false;
         }
 
         /* Check if a word is capitalized */
-        protected bool word_is_capitalized (string word) {
-            if (/[A-Z]/.match (word[0].to_string()))
+        private bool word_is_capitalized (string word) {
+            if (/[A-Z]/.match (word[0].to_string ()))
                 return true;
             return false;
-        }
-
-        /* Check if character is a letter */
-        protected bool is_alphanumeric (unichar letter) {
-            return /[a-zA-Z]/.match (letter.to_string());
         }
     }
 

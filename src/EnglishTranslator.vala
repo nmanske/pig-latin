@@ -17,14 +17,14 @@
 
 namespace PigLatin {
 
-    public class ReverseTranslator : Translator {
+    public class EnglishTranslator : Translator {
 
         public override string encode_word (string word) {
-            return word.reverse ();
+            return word;
         }
 
         public override string decode_word (string word) {
-            return word.reverse ();
+            return word;
         }
     }
 
