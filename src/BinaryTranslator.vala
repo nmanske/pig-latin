@@ -34,11 +34,6 @@ namespace PigLatin {
             return result;
         }
 
-        public override string decode_word (string word) {
-            // TODO
-            return word;
-        }
-
         protected override string pre_process_word (string word) {
             return word;
         }

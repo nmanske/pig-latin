@@ -23,9 +23,6 @@ namespace PigLatin {
             return word;
         }
 
-        public override string decode_word (string word) {
-            return word;
-        }
     }
 
 }

@@ -73,7 +73,7 @@ namespace PigLatin {
 		    combo_box.append_text ("Pig Latin");
 		    combo_box.append_text ("Reverse");
             combo_box.append_text ("Binary");
-            combo_box.append_text ("English");
+            // combo_box.append_text ("English");
 		    combo_box.active = 0;
 		    combo_box.changed.connect (() => {
 			    string title = combo_box.get_active_text ();

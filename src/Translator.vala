@@ -22,15 +22,11 @@ namespace PigLatin {
         protected Regex words = /\b[a-zA-Z']+\b/;
 
         /* Breaks string into words and encodes them word-by-word */
-        public virtual string translate (string input, bool decode = false) {
-            RegexEvalCallback eval = encode_word_cb;
-            if (decode)
-                eval = decode_word_cb;
-            return words.replace_eval (input, -1, 0, 0, eval);
+        public virtual string translate (string input) {
+            return words.replace_eval (input, -1, 0, 0, encode_word_cb);
         }
 
         public abstract string encode_word (string word);
-        public abstract string decode_word (string word);
 
         protected virtual string pre_process_word (string word) {
             string result = word;
@@ -64,12 +60,6 @@ namespace PigLatin {
         private bool encode_word_cb (MatchInfo match_info, StringBuilder result) {
             string word = match_info.fetch (0);
             result.append (post_process_word (encode_word (pre_process_word(word)), word));
-            return false;
-        }
-
-        private bool decode_word_cb (MatchInfo match_info, StringBuilder result) {
-            string word = match_info.fetch (0);
-            result.append (post_process_word (decode_word (pre_process_word(word)), word));
             return false;
         }
 
