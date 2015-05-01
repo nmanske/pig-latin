@@ -9,3 +9,8 @@ Terminal=false
 Type=Application
 X-GNOME-Gettext-Domain=pig-latin
 X-GNOME-Keywords=Pig;Latin;Translator
+Actions=AboutDialog;
+
+[Desktop Action AboutDialog]
+Exec=pig-latin --about
+Name=About Pig Latin
