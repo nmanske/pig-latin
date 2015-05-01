@@ -19,7 +19,7 @@ namespace PigLatin {
 
     public abstract class Translator : GLib.Object {
 
-        protected Regex words = /\b[a-zA-Z']+\b/;
+        protected Regex words = /\b[a-z']+\b/i;
 
         /* Breaks string into words and encodes them word-by-word */
         public virtual string translate (string input) {
