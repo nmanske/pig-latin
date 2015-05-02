@@ -107,9 +107,6 @@ namespace PigLatin {
             headerbar.pack_end (clear_button);
             headerbar.pack_end (copy_button);
 
-            Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
-            Gtk.Box box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-
             input.wrap_mode = Gtk.WrapMode.WORD;
             output.wrap_mode = Gtk.WrapMode.WORD;
             output.editable = false;
@@ -136,9 +133,17 @@ namespace PigLatin {
                 clipboard.set_text (output.buffer.text, -1);
             });
 
-            box.pack_start (input, true, true, 0);
-            box.pack_start (output, true, true, 0);
-            scrolled_window.add (box);
+            /* Add the text boxes as scrollable panes */
+            Gtk.Paned paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
+            Gtk.ScrolledWindow input_scrollbox = new Gtk.ScrolledWindow (null, null);
+            Gtk.ScrolledWindow output_scrollbox = new Gtk.ScrolledWindow (null, null);
+            input_scrollbox.add (input);
+            output_scrollbox.add (output);
+            paned.pack1 (input_scrollbox, true, false);
+            paned.pack2 (output_scrollbox, true, false);
+
+            Gtk.ScrolledWindow scrolled_window = new Gtk.ScrolledWindow (null, null);
+            scrolled_window.add (paned);
             window.add (scrolled_window);
             window.show_all ();
         }
