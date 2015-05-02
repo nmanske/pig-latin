@@ -1,14 +1,14 @@
 [Desktop Entry]
-Name=Pig Latin Translator
-GenericName=Pig Latin Translator
-Comment=A pig latin translator. 100% Vegan.
-Categories=GTK;Utility;
+Name=Pig Latin
+GenericName=Text Encoder
+Comment=An encoder of frivolous jargon.
+Categories=Utility;Amusement;GTK;
 Exec=pig-latin
 Icon=pig-latin
 Terminal=false
 Type=Application
 X-GNOME-Gettext-Domain=pig-latin
-X-GNOME-Keywords=Pig;Latin;Translator
+X-GNOME-Keywords=Pig;Latin;Encoder;Translator;Text;Binary;
 Actions=AboutDialog;
 
 [Desktop Action AboutDialog]

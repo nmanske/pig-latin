@@ -28,17 +28,16 @@ namespace PigLatin {
         private static Translator pig_latin_translator = new PigLatinTranslator ();
         private static Translator reverse_translator = new ReverseTranslator ();
         private static Translator binary_translator = new BinaryTranslator ();
-        private static Translator english_translator = new EnglishTranslator ();
         private static Translator current_translator = pig_latin_translator;
 
         private Gtk.TextView input = new Gtk.TextView ();
-        private Gtk.TextView output = new Gtk.TextView ();
+        private Gtk.Label output = new Gtk.Label (null);
 
         construct {
             // Granite automatically makes an "About" section with this stuff
             application_id = "me.alexgleason.piglatin";
             flags = ApplicationFlags.FLAGS_NONE;
-            program_name = "Pig Latin Translator";
+            program_name = "Pig Latin";
             app_years = "2015";
             build_version = "0.0.1";
             app_icon = "pig-latin";
@@ -49,7 +48,7 @@ namespace PigLatin {
             about_documenters = { null };
             about_artists = { null };
             about_authors = { "Alex Gleason <alex@alexgleason.me>" };
-            about_comments = "A pig latin translator. 100% Vegan.";
+            about_comments = "An encoder of frivolous jargon.";
             about_translators = null;
             about_license_type = Gtk.License.GPL_3_0;
         }
@@ -73,7 +72,6 @@ namespace PigLatin {
 		    combo_box.append_text ("Pig Latin");
 		    combo_box.append_text ("Reverse");
             combo_box.append_text ("Binary");
-            // combo_box.append_text ("English");
 		    combo_box.active = 0;
 		    combo_box.changed.connect (() => {
 			    string title = combo_box.get_active_text ();
@@ -87,11 +85,8 @@ namespace PigLatin {
                     case "Binary":
                         current_translator = binary_translator;
                         break;
-                    case "English":
-                        current_translator = english_translator;
-                        break;
                     default:
-                        current_translator = english_translator;
+                        current_translator = pig_latin_translator;
                         break;
                 }
                 update_buffer();
@@ -108,17 +103,15 @@ namespace PigLatin {
             headerbar.pack_end (copy_button);
 
             input.wrap_mode = Gtk.WrapMode.WORD;
-            output.wrap_mode = Gtk.WrapMode.WORD;
-            output.editable = false;
-            input.margin = 12;
-            output.left_margin = 12;
-            output.right_margin = 12;
-            output.pixels_above_lines = 10;
+            output.wrap_mode = Pango.WrapMode.WORD;
+            output.single_line_mode = false;
+            output.wrap = true;
+            output.selectable = true;
+            output.margin = 12;
             input.left_margin = 12;
             input.right_margin = 12;
             input.pixels_above_lines = 10;
             output.get_style_context ().add_class ("h3");
-            output.cursor_visible = false;
 
             input.buffer.changed.connect(() => {
                 update_buffer ();
@@ -130,7 +123,7 @@ namespace PigLatin {
             });
 
             copy_button.clicked.connect(() => {
-                clipboard.set_text (output.buffer.text, -1);
+                clipboard.set_text (output.get_label(), -1);
             });
 
             /* Add the text boxes as scrollable panes */
@@ -149,7 +142,7 @@ namespace PigLatin {
         }
 
         private void update_buffer () {
-            output.buffer.text = current_translator.translate (input.buffer.text)+"\n";
+            output.set_label (current_translator.translate (input.buffer.text));
         }
     }
 }
