@@ -17,11 +17,11 @@
 
 namespace PigLatin {
 
-    public class PigLatinTranslator : Translator {
+    public class PigLatinTranslator : WordTranslator {
 
-        public override string encode_word (string word) {
+        public override string encode_phrase (string phrase) {
             Regex vowels = /[aeiou]/i;
-            string result = word;
+            string result = phrase;
             /* Process words that start with vowel sounds */
             if (vowels.match (result[0:1]))
                 result = result + "w";
@@ -29,7 +29,7 @@ namespace PigLatin {
             else {
                 /* Check for QU and just put it at the end */
                 if (/qu/i.match (result[0:2]))
-                    result = result[2:word.length]+result[0:2];
+                    result = result[2:phrase.length]+result[0:2];
                 /* Otherwise find the first vowel and start the word there */
                 else {
                     int index_of_first_vowel = 1;

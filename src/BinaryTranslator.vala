@@ -20,27 +20,21 @@ namespace PigLatin {
     public class BinaryTranslator : Translator {
 
         construct {
-            /* Match the whole string */
-            this.words = /[\s\S]*/;
+            /* Matches the whole string */
+            this.phrase_exp = /[\s\S]*/;
         }
 
-        public override string encode_word (string word) {
+        public override string encode_phrase (string phrase) {
             string result = "";
-            for (int i = 0; i < 8 * word.length; i++) {
-                result += ((int) (0 != (word[i/8] & 1 << (~i&7)))).to_string();
+            /* Some real magic happens here */
+            for (int i = 0; i < 8 * phrase.length; i++) {
+                result += ((int) (0 != (phrase[i/8] & 1 << (~i&7)))).to_string();
                 if ( (i + 1) % 8 == 0)
                     result += " ";
             }
             return result;
         }
 
-        protected override string pre_process_word (string word) {
-            return word;
-        }
-
-        protected override string post_process_word (string new_word, string original_word) {
-            return new_word;
-        }
     }
 
 }
