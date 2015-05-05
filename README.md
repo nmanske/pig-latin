@@ -6,4 +6,6 @@ GTK program written in Vala that translates the input text into pig latin.
 How to Build
 ------------
 
-    make
+See ./debian/control for build dependencies.
+
+    DESTDIR=$(pwd) && make
