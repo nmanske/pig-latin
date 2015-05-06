@@ -1,3 +1,4 @@
+DESTDIR=/
 # Where to put executable commands on 'make install'?
 BIN			= $(DESTDIR)/usr/bin
 # Where to put icons on 'make install'?
@@ -15,4 +16,3 @@ install:
 	install _build/pig-latin $(BIN)
 	install data/pig-latin.desktop $(SHORTCUT)
 	install data/pig-latin.svg $(ICONS)
-

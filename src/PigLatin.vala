@@ -39,7 +39,7 @@ namespace PigLatin {
             flags = ApplicationFlags.FLAGS_NONE;
             program_name = "Pig Latin";
             app_years = "2015";
-            build_version = "0.0.1";
+            build_version = "0.1";
             app_icon = "pig-latin";
             main_url = "https://github.com/alexgleason/pig-latin/";
             bug_url = "https://github.com/alexgleason/pig-latin/issues";
