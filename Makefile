@@ -1,4 +1,3 @@
-DESTDIR=/
 # Where to put executable commands on 'make install'?
 BIN			= $(DESTDIR)/usr/bin
 # Where to put icons on 'make install'?

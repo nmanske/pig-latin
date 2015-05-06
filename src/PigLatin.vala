@@ -39,17 +39,17 @@ namespace PigLatin {
             flags = ApplicationFlags.FLAGS_NONE;
             program_name = "Pig Latin";
             app_years = "2015";
-            build_version = "0.1";
+            build_version = "0.1.0";
             app_icon = "pig-latin";
-            main_url = "https://github.com/alexgleason/pig-latin/";
-            bug_url = "https://github.com/alexgleason/pig-latin/issues";
-            help_url = "https://github.com/alexgleason/pig-latin/";
-            translate_url = "https://github.com/alexgleason/pig-latin/";
-            about_documenters = { null };
-            about_artists = { null };
+            main_url = "https://launchpad.net/~alexgleason/pig-latin/+git/pig-latin/";
+            // bug_url = "";
+            // help_url = "";
+            // translate_url = "";
+            // about_documenters = { null };
+            // about_artists = { null };
             about_authors = { "Alex Gleason <alex@alexgleason.me>" };
             about_comments = "An encoder of frivolous jargon.";
-            about_translators = null;
+            // about_translators = null;
             about_license_type = Gtk.License.GPL_3_0;
         }
 
