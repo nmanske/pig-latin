@@ -1,7 +1,13 @@
-Pig Latin Translator
-====================
+Pig Latin
+=========
 
-GTK program written in Vala that translates the input text into pig latin.
+An encoder of frivolous jargon.
+
+![Screenshot][screenshot.png]
+
+Language: Vala
+Libraries: GTK, Granite
+OS: elementary OS Freya, Ubuntu 14.04
 
 Building
 ------------
