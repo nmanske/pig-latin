@@ -41,9 +41,9 @@ namespace PigLatin {
             app_years = "2015";
             build_version = "0.1.0";
             app_icon = "pig-latin";
-            main_url = "https://launchpad.net/~alexgleason/pig-latin/+git/pig-latin/";
-            // bug_url = "";
-            // help_url = "";
+            main_url = "https://launchpad.net/pig-latin";
+            bug_url = "https://bugs.launchpad.net/pig-latin";
+            help_url = "https://answers.launchpad.net/pig-latin";
             // translate_url = "";
             // about_documenters = { null };
             // about_artists = { null };
@@ -69,20 +69,19 @@ namespace PigLatin {
 
 		    // Combo Box
 		    Gtk.ComboBoxText combo_box = new Gtk.ComboBoxText ();
-		    combo_box.append_text ("Pig Latin");
-		    combo_box.append_text ("Reverse");
-            combo_box.append_text ("Binary");
+		    combo_box.append ("pig-latin", "Pig Latin");
+		    combo_box.append ("reverse", "Reverse");
+            combo_box.append ("binary", "Binary");
 		    combo_box.active = 0;
 		    combo_box.changed.connect (() => {
-			    string title = combo_box.get_active_text ();
-			    switch (title) {
-                    case "Pig Latin":
+			    switch (combo_box.get_active_id ()) {
+                    case "pig-latin":
                         current_translator = pig_latin_translator;
                         break;
-                    case "Reverse":
+                    case "reverse":
                         current_translator = reverse_translator;
                         break;
-                    case "Binary":
+                    case "binary":
                         current_translator = binary_translator;
                         break;
                     default:
