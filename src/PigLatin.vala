@@ -44,7 +44,7 @@ namespace PigLatin {
             main_url = "https://launchpad.net/pig-latin";
             bug_url = "https://bugs.launchpad.net/pig-latin";
             help_url = "https://answers.launchpad.net/pig-latin";
-            // translate_url = "";
+            translate_url = "https://translations.launchpad.net/pig-latin";
             // about_documenters = { null };
             // about_artists = { null };
             about_authors = { "Alex Gleason <alex@alexgleason.me>" };
