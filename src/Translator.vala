@@ -23,8 +23,12 @@ namespace PigLatin {
         protected Regex phrase_exp;
 
         /* Main translate method */
-        public virtual string translate (string input) {
-            return phrase_exp.replace_eval (input, -1, 0, 0, encode_phrase_cb);
+        public virtual string translate (string input) throws RegexError {
+            try {
+                return phrase_exp.replace_eval (input, -1, 0, 0, encode_phrase_cb);
+            } catch (RegexError e) {
+                return "";
+            }
         }
 
         /* For encoding each phrase */

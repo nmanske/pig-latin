@@ -39,7 +39,7 @@ namespace PigLatin {
             flags = ApplicationFlags.FLAGS_NONE;
             program_name = "Pig Latin";
             app_years = "2015";
-            build_version = "0.1.0";
+            build_version = "0.1.1";
             app_icon = "pig-latin";
             main_url = "https://launchpad.net/pig-latin";
             bug_url = "https://bugs.launchpad.net/pig-latin";
@@ -65,7 +65,9 @@ namespace PigLatin {
             // Clipboard
             Gdk.Display display = window.get_display ();
             Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (display, Gdk.SELECTION_CLIPBOARD);
-            var copy_button = new Gtk.ToolButton.from_stock (Gtk.Stock.COPY);
+            Gtk.Image copy_button_icon = new Gtk.Image.from_icon_name ("edit-copy", Gtk.IconSize.MENU);
+            Gtk.ToolButton copy_button = new Gtk.ToolButton (copy_button_icon, null);
+            copy_button.tooltip_text = "Copy Result";
 
 		    // Combo Box
 		    Gtk.ComboBoxText combo_box = new Gtk.ComboBoxText ();
@@ -88,11 +90,17 @@ namespace PigLatin {
                         current_translator = pig_latin_translator;
                         break;
                 }
-                update_buffer();
+                try {
+                    update_buffer();
+                } catch (RegexError e) {
+                    // Do nothing
+                }
 		    });
 
             // Headerbar
-            var clear_button = new Gtk.ToolButton.from_stock (Gtk.Stock.CLEAR);
+            Gtk.Image clear_button_icon = new Gtk.Image.from_icon_name ("edit-clear", Gtk.IconSize.MENU);
+            Gtk.ToolButton clear_button = new Gtk.ToolButton (clear_button_icon, null);
+            clear_button.tooltip_text = "Clear";
             Gtk.HeaderBar headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
             headerbar.title = program_name;
@@ -113,9 +121,17 @@ namespace PigLatin {
             output.get_style_context ().add_class ("h3");
 
             input.buffer.changed.connect(() => {
-                update_buffer ();
+                try {
+                    update_buffer();
+                } catch (RegexError e) {
+                    // Do nothing
+                }
             });
-            update_buffer (); // Run on start
+            try {
+                update_buffer(); // Run on start
+            } catch (RegexError e) {
+                // Do nothing
+            }
 
             clear_button.clicked.connect(() => {
                 input.buffer.text = "";
@@ -140,8 +156,12 @@ namespace PigLatin {
             window.show_all ();
         }
 
-        private void update_buffer () {
-            output.set_label (current_translator.translate (input.buffer.text));
+        private void update_buffer () throws RegexError {
+            try {
+                output.set_label (current_translator.translate (input.buffer.text));
+            } catch (RegexError e) {
+                // do nothing
+            }
         }
     }
-}
+} // Run on start
