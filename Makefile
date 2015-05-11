@@ -7,7 +7,7 @@ SHORTCUT	= $(DESTDIR)/usr/share/applications
 
 all:
 	mkdir -p _build
-	valac --pkg gtk+-3.0 --pkg granite -o _build/pig-latin src/*.vala
+	valac --pkg gtk+-3.0 --pkg granite --pkg gtksourceview-3.0 -X -DGETTEXT_PACKAGE="..." -o _build/pig-latin src/*.vala
 clean:
 	rm -rf _build
 install:

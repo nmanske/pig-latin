@@ -15,6 +15,8 @@
 
 */
 
+const string GETTEXT_PACKAGE = "...";
+
 namespace PigLatin {
 
     public static int main (string[] args) {
@@ -30,7 +32,7 @@ namespace PigLatin {
         private static Translator binary_translator = new BinaryTranslator ();
         private static Translator current_translator = pig_latin_translator;
 
-        private Gtk.TextView input = new Gtk.TextView ();
+        private Gtk.SourceView input = new Gtk.SourceView ();
         private Gtk.Label output = new Gtk.Label (null);
 
         construct {
@@ -48,7 +50,7 @@ namespace PigLatin {
             // about_documenters = { null };
             // about_artists = { null };
             about_authors = { "Alex Gleason <alex@alexgleason.me>" };
-            about_comments = "An encoder of frivolous jargon.";
+            about_comments = _("An encoder of frivolous jargon.");
             // about_translators = null;
             about_license_type = Gtk.License.GPL_3_0;
         }
@@ -67,13 +69,13 @@ namespace PigLatin {
             Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (display, Gdk.SELECTION_CLIPBOARD);
             Gtk.Image copy_button_icon = new Gtk.Image.from_icon_name ("edit-copy", Gtk.IconSize.MENU);
             Gtk.ToolButton copy_button = new Gtk.ToolButton (copy_button_icon, null);
-            copy_button.tooltip_text = "Copy Result";
+            copy_button.tooltip_text = _("Copy Result");
 
 		    // Combo Box
 		    Gtk.ComboBoxText combo_box = new Gtk.ComboBoxText ();
-		    combo_box.append ("pig-latin", "Pig Latin");
-		    combo_box.append ("reverse", "Reverse");
-            combo_box.append ("binary", "Binary");
+		    combo_box.append ("pig-latin", _("Pig Latin"));
+		    combo_box.append ("reverse", _("Reverse"));
+            combo_box.append ("binary", _("Binary"));
 		    combo_box.active = 0;
 		    combo_box.changed.connect (() => {
 			    switch (combo_box.get_active_id ()) {
@@ -100,7 +102,7 @@ namespace PigLatin {
             // Headerbar
             Gtk.Image clear_button_icon = new Gtk.Image.from_icon_name ("edit-clear", Gtk.IconSize.MENU);
             Gtk.ToolButton clear_button = new Gtk.ToolButton (clear_button_icon, null);
-            clear_button.tooltip_text = "Clear";
+            clear_button.tooltip_text = _("Clear");
             Gtk.HeaderBar headerbar = new Gtk.HeaderBar ();
             headerbar.show_close_button = true;
             headerbar.title = program_name;

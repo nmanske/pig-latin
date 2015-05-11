@@ -24,7 +24,8 @@ Packaging
     Build-Depends: debhelper (>= 8.0.0),
                    valac (>= 0.22),
                    libgranite-dev (>= 0.3.0),
-                   libgtk-3-dev (>= 3.10)
+                   libgtk-3-dev (>= 3.10),
+                   libgtksourceview-3.0-dev
     Standards-Version: 3.9.4
     Homepage: https://github.com/alexgleason/pig-latin
     Vcs-Git: https://github.com/alexgleason/pig-latin.git
