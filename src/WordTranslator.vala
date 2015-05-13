@@ -21,7 +21,7 @@ namespace PigLatin {
 
         construct {
             /* This breaks the input up into words */
-            this.phrase_exp = /(\b|(?:_*)?)([a-z']+)((?:_*)?|\b)/i;
+            this.phrase_exp = /(\b|(?:_+))?([a-z']+)((?:_+)|\b)/i;
         }
 
         /* Lowercases a capitalized letter since it will be moved */
