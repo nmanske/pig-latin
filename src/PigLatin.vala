@@ -141,6 +141,9 @@ namespace PigLatin {
 
             copy_button.clicked.connect(() => {
                 clipboard.set_text (output.get_label(), -1);
+                GLib.Notification copied_notification = new GLib.Notification ("Copied");
+                copied_notification.set_body ("The result was copied to the clipboard.");
+                this.send_notification (null, copied_notification);
             });
 
             /* Add the text boxes as scrollable panes */
