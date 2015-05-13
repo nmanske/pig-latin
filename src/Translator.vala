@@ -45,7 +45,7 @@ namespace PigLatin {
         }
 
         /* The regex callback */
-        private bool encode_phrase_cb (MatchInfo match_info, StringBuilder result) {
+        protected virtual bool encode_phrase_cb (MatchInfo match_info, StringBuilder result) {
             string phrase = match_info.fetch (0);
             result.append (post_process_phrase (encode_phrase (pre_process_phrase(phrase)), phrase));
             return false;
