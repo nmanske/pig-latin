@@ -21,7 +21,7 @@ namespace PigLatin {
 
         construct {
             /* This breaks the input up into words */
-            this.phrase_exp = /(\b|(?:_+))?([a-z']+)((?:_+)|\b)/i;
+            this.phrase_exp = /((?i)(?<=^|[^a-z])(?=[a-z])|(?<=[a-z])(?=$|[^a-z]))([a-z']+)((?i)(?<=^|[^a-z])(?=[a-z])|(?<=[a-z])(?=$|[^a-z]))/i;
         }
 
         /* Lowercases a capitalized letter since it will be moved */
@@ -66,13 +66,6 @@ namespace PigLatin {
         private bool word_is_capitalized (string word) {
             if (/[A-Z]/.match (word[0:1]))
                 return true;
-            return false;
-        }
-
-        /* The regex callback */
-        protected override bool encode_phrase_cb (MatchInfo match_info, StringBuilder result) {
-            string phrase = match_info.fetch (2);
-            result.append (match_info.fetch (1) + post_process_phrase (encode_phrase (pre_process_phrase(phrase)), phrase) + match_info.fetch (3));
             return false;
         }
 
