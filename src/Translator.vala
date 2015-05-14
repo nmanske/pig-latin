@@ -22,9 +22,6 @@ namespace PigLatin {
         /* The expression for breaking the input into parts */
         protected Regex phrase_exp;
 
-        /* An optional dictionary for directly translating phrases */
-        protected string[,] dictionary;
-
         /* Main translate method */
         public virtual string translate (string input) throws RegexError {
             try {
@@ -52,14 +49,6 @@ namespace PigLatin {
             string phrase = match_info.fetch (0);
             result.append (post_process_phrase (encode_phrase (pre_process_phrase(phrase)), phrase));
             return false;
-        }
-
-        /* Translates dictionary phrases */
-        protected string dictionary_translate (string phrase) {
-            for (int i=0; i<dictionary.length; i++) {
-                if (phrase == dictionary[i,0])
-                    return dictionary[i,1];
-            }
         }
 
     }
