@@ -162,11 +162,7 @@ namespace PigLatin {
         }
 
         private void update_buffer () throws RegexError {
-            try {
-                output.set_label (current_translator.translate (input.buffer.text));
-            } catch (RegexError e) {
-                // do nothing
-            }
+            output.set_label (current_translator.translate (input.buffer.text));
         }
     }
 } // Run on start

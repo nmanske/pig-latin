@@ -19,16 +19,11 @@ namespace PigLatin {
 
     public class BinaryTranslator : Translator {
 
-        construct {
-            /* Matches the whole string */
-            this.phrase_exp = /[\s\S]*/;
-        }
-
-        public override string encode_phrase (string phrase) {
+        public override string translate (string input) {
             string result = "";
             /* Some real magic happens here */
-            for (int i = 0; i < 8 * phrase.length; i++) {
-                result += ((int) (0 != (phrase[i/8] & 1 << (~i&7)))).to_string();
+            for (int i = 0; i < 8 * input.length; i++) {
+                result += ((int) (0 != (input[i/8] & 1 << (~i&7)))).to_string();
                 if ( (i + 1) % 8 == 0)
                     result += " ";
             }

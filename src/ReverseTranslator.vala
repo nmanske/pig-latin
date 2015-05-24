@@ -17,7 +17,11 @@
 
 namespace PigLatin {
 
-    public class ReverseTranslator : WordTranslator {
+    public class ReverseTranslator : PhraseTranslator {
+
+		construct {
+			this.phrase_exp = WORD;
+		}
 
         public override string encode_phrase (string phrase) {
             return phrase.reverse ();

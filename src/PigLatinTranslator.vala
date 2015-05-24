@@ -17,7 +17,11 @@
 
 namespace PigLatin {
 
-    public class PigLatinTranslator : WordTranslator {
+    public class PigLatinTranslator : PhraseTranslator {
+
+		construct {
+			this.phrase_exp = WORD;
+		}
 
         public override string encode_phrase (string phrase) {
             Regex vowels = /[aeiou]/i;
